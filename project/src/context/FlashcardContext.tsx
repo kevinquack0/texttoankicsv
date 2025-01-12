@@ -5,6 +5,7 @@ const FlashcardContext = createContext<FlashcardContextType | undefined>(undefin
 
 export function FlashcardProvider({ children }: { children: React.ReactNode }) {
   const [cards, setCards] = useState<Flashcard[]>([]);
+  const [apiKey, setApiKey] = useState<string>('');
 
   const addCards = (newCards: Flashcard[]) => {
     setCards((prev) => [...prev, ...newCards]);
@@ -23,7 +24,14 @@ export function FlashcardProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <FlashcardContext.Provider value={{ cards, addCards, updateCard, clearCards }}>
+    <FlashcardContext.Provider value={{
+      cards,
+      apiKey,
+      addCards,
+      updateCard,
+      clearCards,
+      setApiKey
+    }}>
       {children}
     </FlashcardContext.Provider>
   );

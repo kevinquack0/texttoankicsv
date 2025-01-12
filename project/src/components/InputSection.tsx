@@ -6,7 +6,7 @@ import { generateFlashcardsFromText } from '../services/openai';
 export default function InputSection() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { addCards } = useFlashcards();
+  const { addCards, apiKey, setApiKey } = useFlashcards();
   const [isGenerating, setIsGenerating] = useState(false);
   const [cardCount, setCardCount] = useState<number>(15);
 
@@ -31,9 +31,14 @@ export default function InputSection() {
       return;
     }
 
+    if (!apiKey) {
+      alert('Please enter your OpenAI API key first.');
+      return;
+    }
+
     try {
       setIsGenerating(true);
-      const newCards = await generateFlashcardsFromText(text, cardCount);
+      const newCards = await generateFlashcardsFromText(text, apiKey, cardCount);
       addCards(newCards);
       if (textareaRef.current) {
         textareaRef.current.value = '';
@@ -47,6 +52,20 @@ export default function InputSection() {
 
   return (
     <div className="space-y-4">
+      <div className="flex flex-col space-y-2">
+        <label htmlFor="apiKey" className="text-sm font-medium text-gray-700">
+          OpenAI API Key
+        </label>
+        <input
+          type="password"
+          id="apiKey"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Enter your OpenAI API key..."
+        />
+      </div>
+
       <div className="flex flex-col space-y-2">
         <label htmlFor="script" className="text-sm font-medium text-gray-700">
           Enter Video Script

@@ -6,7 +6,9 @@ export interface Flashcard {
 
 export interface FlashcardContextType {
   cards: Flashcard[];
+  apiKey: string;
   addCards: (cards: Flashcard[]) => void;
   updateCard: (id: string, front: string, back: string) => void;
   clearCards: () => void;
+  setApiKey: (key: string) => void;
 }

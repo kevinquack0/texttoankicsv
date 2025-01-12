@@ -1,15 +1,15 @@
 import OpenAI from 'openai';
 import { Flashcard } from '../types';
 
-const openai = new OpenAI({
-    apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-    dangerouslyAllowBrowser: true
-});
-
-export const generateFlashcardsFromText = async (text: string, cardCount: number = 15): Promise<Flashcard[]> => {
-    if (!import.meta.env.VITE_OPENAI_API_KEY) {
-        throw new Error('OpenAI API key not found in environment variables. Please add VITE_OPENAI_API_KEY to your .env file.');
+export const generateFlashcardsFromText = async (text: string, apiKey: string, cardCount: number = 15): Promise<Flashcard[]> => {
+    if (!apiKey) {
+        throw new Error('OpenAI API key is required');
     }
+
+    const openai = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true
+    });
 
     try {
         const response = await openai.chat.completions.create({
